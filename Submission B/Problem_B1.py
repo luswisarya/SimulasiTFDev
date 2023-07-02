@@ -39,11 +39,17 @@ def solution_B1():
     # MAKE VARIABLE FOR CUSTOM CALLBACK
     custom_callback = MyCallback()
 
-    model = Sequential([
-        Dense(units=1, input_shape=[1])
-    ])
+    # Normalizer
+    normalizer = tf.keras.layers.Normalization(axis=None, input_shape=(1,))
+    normalizer.adapt(X)
+    
+    model = Sequential()
+    model.add(normalizer)
+    model.add(keras.layers.Dense(32))
+    model.add(keras.layers.Dense(1))
 
-    model.compile(optimizer='sgd',
+    
+    model.compile(optimizer='adam',
                   metrics='accuracy',
                   loss='mean_squared_error')
 
